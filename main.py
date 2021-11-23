@@ -39,6 +39,8 @@ for i, sentence in enumerate(sentence_list):
     stopwords.append(',')
     stopwords.append('?')
     stopwords.append('...')
+    stopwords.append('.....')
+    stopwords.append('``')
 
     clean_list = []
     for token in token_list:
@@ -56,10 +58,14 @@ for i, sentence in enumerate(sentence_list):
     len_filter_list = list(filter(lambda x: len(x) > 1, clean_list))
     print('4 >>>> {}'.format(len_filter_list))
 
-    # 2-4.(')포함 된 Toekn 제거
+    # 2-4.(')포함 된 Token 제거
     clean_filter_list = list(filter(lambda x: "'" not in x, len_filter_list))
     print('5 >>>>> {}'.format(clean_filter_list))
-    words.extend(clean_filter_list)
+
+    # 2-5. ('-')포함 된 Token 제거
+    clean_list = list(filter(lambda x: "-" not in x, clean_filter_list))
+    print('6 >>>>>> {}'.format(clean_list))
+    words.extend(clean_list)
 
 print(words)
 
