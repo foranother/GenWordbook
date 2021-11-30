@@ -109,7 +109,7 @@ def get_dict(word):
     return word_mean_list
 
 total_dict_list = [] # 전체 [[단어1, 뜻1, 뜻2, 뜻3, 뜻4, 뜻5], [단어2, 뜻1, 뜻2, 뜻3, 뜻4, 뜻5], ...]
-for word in unique_words:
+for word in unique_words[:10]:
     word_mean_list = get_dict(word) # [word, 뜻1, 뜻2, 뜻3, 뜻4, 뜻5]
     if word_mean_list != None:
         total_dict_list.append(word_mean_list)
@@ -120,8 +120,22 @@ pprint.pprint(total_dict_list)
 ##################
 col_names = ['word', 'mean_1', 'mean_2', 'mean_3', 'mean_4', 'mean_5']
 df_dict = pd.DataFrame(total_dict_list, columns=col_names)
+print(df_dict)
 df_dict.to_excel('words.xlsx', index=False)
 
 #######################
 # 6. 시각화(WordCloud) #
 #######################
+# mask 만들기
+circle_mask = np.array(Image.open("./imgs/circle.png"))
+cnu_mask = np.array(Image.open("./imgs/cnu_text.png"))
+wc = WordCloud(mask=cnu_mask,
+               background_color='white',
+               width=500,
+               height=500,
+               max_words=200,
+               max_font_size=100)
+
+fd_names = nltk.FreqDist(words)
+wc.generate_from_frequencies(fd_names)
+wc.to_file('wordcloud2.png')
